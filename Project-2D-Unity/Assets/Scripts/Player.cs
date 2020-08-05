@@ -26,6 +26,7 @@ public class Player : MonoBehaviour {
         bool go_right = Input.GetKey(KeyCode.RightArrow);
         bool go_up = Input.GetKey(KeyCode.UpArrow);
         bool go_down = Input.GetKey(KeyCode.DownArrow);
+        bool attack = Input.GetKey(KeyCode.A);
 
         if (go_left)
         {
@@ -55,6 +56,26 @@ public class Player : MonoBehaviour {
             animator.Play("player_go_down");
         }
         else
+        if (attack)
+        {
+            switch (currentMove)
+            {
+                case "go_left":
+                    animator.Play("player_attack_left");
+                    break;
+                case "go_right":
+                    animator.Play("player_attack_right");
+                    break;
+                case "go_up":
+                    animator.Play("player_attack_up");
+                    break;
+
+                default:
+                    animator.Play("player_attack_down");
+                    break;
+            }
+        }
+        else
         {
             switch (currentMove)
             {
@@ -73,30 +94,5 @@ public class Player : MonoBehaviour {
                     break;
             }
         }
-
-        /*
-        if (go_left || go_right || go_up || go_down)
-        {
-            if (go_left)
-            {
-                body2D.velocity = new Vector2(-runSpeed, body2D.velocity.y);
-                if (!go_up)
-                    animator.Play("player_run");
-                GetComponent<SpriteRenderer>().flipX = true;
-            }
-            if (go_right)
-            {
-                body2D.velocity = new Vector2(runSpeed, body2D.velocity.y);
-                if (!go_up)
-                    animator.Play("player_run");
-                GetComponent<SpriteRenderer>().flipX = false;
-            }
-        }
-        else
-        {
-            animator.Play("player_down_standing");
-            body2D.velocity = new Vector2(0, body2D.velocity.y);
-        }
-        */
     }
 }
