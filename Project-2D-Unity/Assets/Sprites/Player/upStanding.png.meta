@@ -1,11 +1,15 @@
 fileFormatVersion: 2
-guid: 4a7d3aaff31cd417a99c5f213ac01c97
+guid: e5ab12de0915847b2b6b6a8e9a165e59
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: idleRight_0
-    21300002: idleRight_1
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: idleUp_0
+  - first:
+      213: 21300002
+    second: idleUp_1
   externalObjects: {}
-  serializedVersion: 7
+  serializedVersion: 11
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -59,8 +63,9 @@ TextureImporter:
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  applyGammaDecoding: 1
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -71,7 +76,8 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - serializedVersion: 2
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -82,7 +88,8 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - serializedVersion: 2
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
     buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -93,15 +100,16 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: idleRight_0
+      name: idleUp_0
       rect:
         serializedVersion: 2
-        x: 282
-        y: 1044
+        x: 281
+        y: 960
         width: 22
         height: 33
       alignment: 0
@@ -111,17 +119,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 739ab31de0ec841d0b1a90bb18320ec3
+      spriteID: 967ec83ae8d8544c0b72351fa5a775fd
+      internalID: 21300000
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: idleRight_1
+      name: idleUp_1
       rect:
         serializedVersion: 2
-        x: 318
-        y: 1044
+        x: 316
+        y: 960
         width: 22
         height: 33
       alignment: 0
@@ -131,7 +140,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c44123bea0e884a47b5cbb7ae1c91a56
+      spriteID: 77ae1689eb757489ab084169e27675a2
+      internalID: 21300002
       vertices: []
       indices: 
       edges: []
@@ -139,11 +149,13 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: ea16ac71fa3c34dfcac4e277d82b0473
+    spriteID: 27c67c509676d41f18b3bb3712c8aad3
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
+    secondaryTextures: []
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
