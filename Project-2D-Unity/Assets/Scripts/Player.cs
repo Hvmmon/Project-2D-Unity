@@ -9,10 +9,14 @@ public class Player : MonoBehaviour {
     [HideInInspector] [SerializeField] new SpriteRenderer renderer;
 
     [SerializeField]
+    protected GameObject _cloudParticlePrefab;
+
+    [SerializeField]
     protected float runSpeed = 10f;
 
     private string currentMove;
     private Vector2 isHurt;
+    private int health;
     private bool isAttack;
     // -------------------------------------------------------------------------
     // Use this for initialization
@@ -22,6 +26,7 @@ public class Player : MonoBehaviour {
         renderer = GetComponent<SpriteRenderer>();
 
         isHurt = new Vector2(0, 0);
+        health = 5;
     }
     // -------------------------------------------------------------------------
     // Update is called once per frame
@@ -38,7 +43,7 @@ public class Player : MonoBehaviour {
             {
                 body2D.velocity = new Vector2(-runSpeed, 0);
                 currentMove = "go_left";
-                animator.Play("player_go_left");
+                animator.Play("go_left");
 
                 isAttack = false;
             }
@@ -47,7 +52,7 @@ public class Player : MonoBehaviour {
             {
                 body2D.velocity = new Vector2(runSpeed, 0);
                 currentMove = "go_right";
-                animator.Play("player_go_right");
+                animator.Play("go_right");
 
                 isAttack = false;
             }
@@ -56,7 +61,7 @@ public class Player : MonoBehaviour {
             {
                 body2D.velocity = new Vector2(0, runSpeed);
                 currentMove = "go_up";
-                animator.Play("player_go_up");
+                animator.Play("go_up");
 
                 isAttack = false;
             }
@@ -65,7 +70,7 @@ public class Player : MonoBehaviour {
             {
                 body2D.velocity = new Vector2(0, -runSpeed);
                 currentMove = "go_down";
-                animator.Play("player_go_down");
+                animator.Play("go_down");
 
                 isAttack = false;
             }
@@ -77,17 +82,17 @@ public class Player : MonoBehaviour {
                 switch (currentMove)
                 {
                     case "go_left":
-                        animator.Play("player_attack_left");
+                        animator.Play("attack_left");
                         break;
                     case "go_right":
-                        animator.Play("player_attack_right");
+                        animator.Play("attack_right");
                         break;
                     case "go_up":
-                        animator.Play("player_attack_up");
+                        animator.Play("attack_up");
                         break;
 
                     default:
-                        animator.Play("player_attack_down");
+                        animator.Play("attack_down");
                         break;
                 }
             }
@@ -98,17 +103,17 @@ public class Player : MonoBehaviour {
                 switch (currentMove)
                 {
                     case "go_left":
-                        animator.Play("player_left_standing");
+                        animator.Play("left_standing");
                         break;
                     case "go_right":
-                        animator.Play("player_right_standing");
+                        animator.Play("right_standing");
                         break;
                     case "go_up":
-                        animator.Play("player_up_standing");
+                        animator.Play("up_standing");
                         break;
 
                     default:
-                        animator.Play("player_down_standing");
+                        animator.Play("down_standing");
                         break;
                 }
             }
@@ -117,6 +122,14 @@ public class Player : MonoBehaviour {
     // -------------------------------------------------------------------------
     public void Update()
     {
+
+        if (health < 0)
+        {
+            Instantiate(_cloudParticlePrefab, transform.position, Quaternion.identity);
+            Destroy(gameObject);
+
+        }
+
         if (isHurt.x > 0)
         {
             transform.position = new Vector3(transform.position.x + (float) 0.04, transform.position.y, transform.position.z);
@@ -195,13 +208,13 @@ public class Player : MonoBehaviour {
     public void OnCollisionEnter2D(Collision2D collision)
     {
         // get objec that hit this enemy
-        EnemyZombie hitByZombie = collision.collider.GetComponent<EnemyZombie>();
+        Enemy hitByEnemy = collision.collider.GetComponent<Enemy>();
 
-        if (hitByZombie)
+        if (hitByEnemy)
         {
             if (isAttack && !attackWrongDirection(collision))
             {
-                hitByZombie.isKilled();
+                hitByEnemy.IsKilled();
             }
             else
             {
@@ -210,11 +223,12 @@ public class Player : MonoBehaviour {
                     // the contact force is downward
                     // that's mean, the player hit this enemy from the top
 
-                    Debug.Log("player hit enemy from the top");
                     isHurt = new Vector2(0, -30);
-                    animator.Play("player_hurt");
-                    // Instantiate(_cloudParticlePrefap, transform.position, Quaternion.identity);
-                    // Destroy(gameObject);
+                    animator.Play("hurt");
+                    health = health - 1;
+
+                    Instantiate(_cloudParticlePrefab, transform.position, Quaternion.identity);
+                    Destroy(gameObject);
                 }
                 else
                 if (collision.contacts[0].normal.y > 0)
@@ -222,17 +236,21 @@ public class Player : MonoBehaviour {
                     // the contact force is upward
                     // that's mean, the player hit this enemy from the bottom
 
-                    Debug.Log("player hit enemy from the bottom");
                     isHurt = new Vector2(0, 30);
-                    animator.Play("player_hurt");
+                    animator.Play("hurt");
+                    health = health - 1;
+
                 }
                 else
                 if (collision.contacts[0].normal.x > 0)
                 {
                     // the contact force is to the right
                     // that's mean, enemy hit this player from the left
+
                     isHurt = new Vector2(30, 0);
-                    animator.Play("player_hurt");
+                    animator.Play("hurt");
+                    health = health - 1;
+
                 }
                 else
                 if (collision.contacts[0].normal.x < 0)
@@ -241,7 +259,8 @@ public class Player : MonoBehaviour {
                     // that's mean, enemy hit this player from the right
 
                     isHurt = new Vector2(-30, 0);
-                    animator.Play("player_hurt");
+                    animator.Play("hurt");
+                    health = health - 1;
                 }
             }
         }
