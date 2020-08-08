@@ -11,87 +11,239 @@ public class Player : MonoBehaviour {
     [SerializeField]
     protected float runSpeed = 10f;
 
-    string currentMove;
-
+    private string currentMove;
+    private Vector2 isHurt;
+    private bool isAttack;
+    // -------------------------------------------------------------------------
     // Use this for initialization
     void Start () {
         animator = GetComponent<Animator>();
         body2D = GetComponent<Rigidbody2D>();
         renderer = GetComponent<SpriteRenderer>();
-    }
 
+        isHurt = new Vector2(0, 0);
+    }
+    // -------------------------------------------------------------------------
     // Update is called once per frame
     void FixedUpdate () {
-        bool go_left = Input.GetKey(KeyCode.LeftArrow);
-        bool go_right = Input.GetKey(KeyCode.RightArrow);
-        bool go_up = Input.GetKey(KeyCode.UpArrow);
-        bool go_down = Input.GetKey(KeyCode.DownArrow);
-        bool attack = Input.GetKey(KeyCode.A);
+        if (isHurt.magnitude < 0.1)
+        {
+            bool go_left = Input.GetKey(KeyCode.LeftArrow);
+            bool go_right = Input.GetKey(KeyCode.RightArrow);
+            bool go_up = Input.GetKey(KeyCode.UpArrow);
+            bool go_down = Input.GetKey(KeyCode.DownArrow);
+            bool attack = Input.GetKey(KeyCode.A);
 
-        if (go_left)
-        {
-            body2D.velocity = new Vector2(-runSpeed, 0);
-            currentMove = "go_left";
-            animator.Play("player_go_left");
-        }
-        else
-        if (go_right)
-        {
-            body2D.velocity = new Vector2(runSpeed, 0);
-            currentMove = "go_right";
-            animator.Play("player_go_right");
-        }
-        else
-        if (go_up) 
-        {
-            body2D.velocity = new Vector2(0, runSpeed);
-            currentMove = "go_up";
-            animator.Play("player_go_up");
-        }
-        else
-        if (go_down)
-        {
-            body2D.velocity = new Vector2(0, -runSpeed);
-            currentMove = "go_down";
-            animator.Play("player_go_down");
-        }
-        else
-        if (attack)
-        {
-            switch (currentMove)
+            if (go_left)
             {
-                case "go_left":
-                    animator.Play("player_attack_left");
-                    break;
-                case "go_right":
-                    animator.Play("player_attack_right");
-                    break;
-                case "go_up":
-                    animator.Play("player_attack_up");
-                    break;
+                body2D.velocity = new Vector2(-runSpeed, 0);
+                currentMove = "go_left";
+                animator.Play("player_go_left");
 
-                default:
-                    animator.Play("player_attack_down");
-                    break;
+                isAttack = false;
+            }
+            else
+            if (go_right)
+            {
+                body2D.velocity = new Vector2(runSpeed, 0);
+                currentMove = "go_right";
+                animator.Play("player_go_right");
+
+                isAttack = false;
+            }
+            else
+            if (go_up)
+            {
+                body2D.velocity = new Vector2(0, runSpeed);
+                currentMove = "go_up";
+                animator.Play("player_go_up");
+
+                isAttack = false;
+            }
+            else
+            if (go_down)
+            {
+                body2D.velocity = new Vector2(0, -runSpeed);
+                currentMove = "go_down";
+                animator.Play("player_go_down");
+
+                isAttack = false;
+            }
+            else
+            if (attack)
+            {
+                isAttack = true;
+
+                switch (currentMove)
+                {
+                    case "go_left":
+                        animator.Play("player_attack_left");
+                        break;
+                    case "go_right":
+                        animator.Play("player_attack_right");
+                        break;
+                    case "go_up":
+                        animator.Play("player_attack_up");
+                        break;
+
+                    default:
+                        animator.Play("player_attack_down");
+                        break;
+                }
+            }
+            else
+            {
+                isAttack = false;
+
+                switch (currentMove)
+                {
+                    case "go_left":
+                        animator.Play("player_left_standing");
+                        break;
+                    case "go_right":
+                        animator.Play("player_right_standing");
+                        break;
+                    case "go_up":
+                        animator.Play("player_up_standing");
+                        break;
+
+                    default:
+                        animator.Play("player_down_standing");
+                        break;
+                }
+            }
+        }
+    }
+    // -------------------------------------------------------------------------
+    public void Update()
+    {
+        if (isHurt.x > 0)
+        {
+            transform.position = new Vector3(transform.position.x + (float) 0.04, transform.position.y, transform.position.z);
+            isHurt.x = isHurt.x - 1;
+        }
+        else
+        if (isHurt.x < 0)
+        {
+            transform.position = new Vector3(transform.position.x - (float) 0.04, transform.position.y, transform.position.z);
+            isHurt.x = isHurt.x + 1;
+        }
+        else
+        if (isHurt.y > 0)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y + (float)0.04, transform.position.z);
+            isHurt.y = isHurt.y - 1;
+        }
+        else
+        if (isHurt.y < 0)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y - (float)0.04, transform.position.z);
+            isHurt.y = isHurt.y + 1;
+        }
+
+    }
+    // -------------------------------------------------------------------------
+    bool attackWrongDirection(Collision2D collision)
+    {
+        if (collision.contacts[0].normal.y < 0)
+        {
+            // the contact force is downward
+            // that's mean, enemy hit the player on top
+
+            if (currentMove != "go_up")
+            {
+                return true;
             }
         }
         else
+        if (collision.contacts[0].normal.y > 0)
         {
-            switch (currentMove)
-            {
-                case "go_left":
-                    animator.Play("player_left_standing");
-                    break;
-                case "go_right":
-                    animator.Play("player_right_standing");
-                    break;
-                case "go_up":
-                    animator.Play("player_up_standing");
-                    break;
+            // the contact force is upward
+            // that's mean, enemy hit the player on the bottom
 
-                default:
-                    animator.Play("player_down_standing");
-                    break;
+            if (currentMove != "go_down")
+            {
+                return true;
+            }
+
+        }
+        else
+        if (collision.contacts[0].normal.x > 0)
+        {
+            // the contact force is to the right
+            // that's mean, enemy hit this player from the left
+            if (currentMove != "go_left")
+            {
+                return true;
+            }
+
+        }
+        else
+        if (collision.contacts[0].normal.x < 0)
+        {
+            // the contact force is to the left
+            // that's mean, enemy hit this player from the right
+            if (currentMove != "go_right")
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    // -------------------------------------------------------------------------
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        // get objec that hit this enemy
+        EnemyZombie hitByZombie = collision.collider.GetComponent<EnemyZombie>();
+
+        if (hitByZombie)
+        {
+            if (isAttack && !attackWrongDirection(collision))
+            {
+
+                hitByZombie.isKilled();
+            }
+            else
+            {
+                if (collision.contacts[0].normal.y < 0)
+                {
+                    // the contact force is downward
+                    // that's mean, the player hit this enemy from the top
+
+                    Debug.Log("player hit enemy from the top");
+                    isHurt = new Vector2(0, -20);
+                    animator.Play("player_hurt");
+                    // Instantiate(_cloudParticlePrefap, transform.position, Quaternion.identity);
+                    // Destroy(gameObject);
+                }
+                else
+                if (collision.contacts[0].normal.y > 0)
+                {
+                    // the contact force is upward
+                    // that's mean, the player hit this enemy from the bottom
+
+                    Debug.Log("player hit enemy from the bottom");
+                    isHurt = new Vector2(0, 20);
+                    animator.Play("player_hurt");
+                }
+                else
+                if (collision.contacts[0].normal.x > 0)
+                {
+                    // the contact force is to the right
+                    // that's mean, enemy hit this player from the left
+                    isHurt = new Vector2(20, 0);
+                    animator.Play("player_hurt");
+                }
+                else
+                if (collision.contacts[0].normal.x < 0)
+                {
+                    // the contact force is to the left
+                    // that's mean, enemy hit this player from the right
+
+                    isHurt = new Vector2(-20, 0);
+                    animator.Play("player_hurt");
+                }
             }
         }
     }
