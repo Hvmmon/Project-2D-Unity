@@ -201,7 +201,6 @@ public class Player : MonoBehaviour {
         {
             if (isAttack && !attackWrongDirection(collision))
             {
-
                 hitByZombie.isKilled();
             }
             else
@@ -212,7 +211,7 @@ public class Player : MonoBehaviour {
                     // that's mean, the player hit this enemy from the top
 
                     Debug.Log("player hit enemy from the top");
-                    isHurt = new Vector2(0, -20);
+                    isHurt = new Vector2(0, -30);
                     animator.Play("player_hurt");
                     // Instantiate(_cloudParticlePrefap, transform.position, Quaternion.identity);
                     // Destroy(gameObject);
@@ -224,7 +223,7 @@ public class Player : MonoBehaviour {
                     // that's mean, the player hit this enemy from the bottom
 
                     Debug.Log("player hit enemy from the bottom");
-                    isHurt = new Vector2(0, 20);
+                    isHurt = new Vector2(0, 30);
                     animator.Play("player_hurt");
                 }
                 else
@@ -232,7 +231,7 @@ public class Player : MonoBehaviour {
                 {
                     // the contact force is to the right
                     // that's mean, enemy hit this player from the left
-                    isHurt = new Vector2(20, 0);
+                    isHurt = new Vector2(30, 0);
                     animator.Play("player_hurt");
                 }
                 else
@@ -241,7 +240,7 @@ public class Player : MonoBehaviour {
                     // the contact force is to the left
                     // that's mean, enemy hit this player from the right
 
-                    isHurt = new Vector2(-20, 0);
+                    isHurt = new Vector2(-30, 0);
                     animator.Play("player_hurt");
                 }
             }
