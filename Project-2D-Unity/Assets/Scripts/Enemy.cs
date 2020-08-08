@@ -1,23 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class EnemyZombie : MonoBehaviour
+public class Enemy: MonoBehaviour
 {
-    private GameObject player;
+    protected GameObject player;
 
-    private Transform transform;
-    private Animator animator;
-    private Rigidbody2D body2D;
-    private BoxCollider2D collider2D;
+    protected Transform transform;
+    protected Animator animator;
+    protected Rigidbody2D body2D;
+    protected BoxCollider2D collider2D;
     [HideInInspector] [SerializeField] new SpriteRenderer renderer;
 
     [SerializeField]
     protected float runSpeed = 3f;
 
-    private string currentMove;
-    private int death;
-    private int attack;
+    protected string currentMove;
+    protected int death;
+    protected int attack;
 
     // -------------------------------------------------------------------------
     // Start is called before the first frame update
@@ -70,28 +68,11 @@ public class EnemyZombie : MonoBehaviour
                     go_down = true;
                 }
 
-                move(go_up, go_down, go_left, go_right);
+                Move(go_up, go_down, go_left, go_right);
             }
             else
             {
                 attack = attack - 1;
-                switch (currentMove)
-                {
-                    case "go_left":
-                        animator.Play("enemy_zombie_attack_right");
-                        renderer.flipX = true;
-                        break;
-                    case "go_right":
-                        animator.Play("enemy_zombie_attack_right");
-                        renderer.flipX = false;
-                        break;
-                    case "go_up":
-                        animator.Play("enemy_zombie_attack_up");
-                        break;
-                    default:
-                        animator.Play("enemy_zombie_attack_down");
-                        break;
-                }
             }
         }
         else
@@ -102,13 +83,12 @@ public class EnemyZombie : MonoBehaviour
         }
     }
     // -------------------------------------------------------------------------
-    void move(bool go_up, bool go_down, bool go_left, bool go_right)
+    void Move(bool go_up, bool go_down, bool go_left, bool go_right)
     {
         if (go_left)
         {
             body2D.velocity = new Vector2(-runSpeed, 0);
-            renderer.flipX = true;
-            animator.Play("enemy_zombie_move_right");
+            animator.Play("move_left");
 
             currentMove = "go_left";
         }
@@ -116,8 +96,7 @@ public class EnemyZombie : MonoBehaviour
         if (go_right)
         {
             body2D.velocity = new Vector2(runSpeed, 0);
-            renderer.flipX = false;
-            animator.Play("enemy_zombie_move_right");
+            animator.Play("move_right");
 
             currentMove = "go_right";
         }
@@ -125,7 +104,7 @@ public class EnemyZombie : MonoBehaviour
         if (go_up)
         {
             body2D.velocity = new Vector2(0, runSpeed);
-            animator.Play("enemy_zombie_move_up");
+            animator.Play("move_up");
 
             currentMove = "go_up";
         }
@@ -133,16 +112,16 @@ public class EnemyZombie : MonoBehaviour
         if (go_down)
         {
             body2D.velocity = new Vector2(0, -runSpeed);
-            animator.Play("enemy_zombie_move_down");
+            animator.Play("move_down");
 
             currentMove = "go_down";
         }
     }
     // -------------------------------------------------------------------------
-    public void isKilled()
+    public void IsKilled()
     {
-        Debug.Log("enemy zombie is killed");
-        animator.Play("enemy_zombie_hurt");
+        Debug.Log("enemy is killed");
+        animator.Play("hurt");
         death = 1;
     }
     // -------------------------------------------------------------------------
