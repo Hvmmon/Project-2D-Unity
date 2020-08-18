@@ -156,7 +156,7 @@ public class Player : MonoBehaviour {
 
     }
     // -------------------------------------------------------------------------
-    bool attackWrongDirection(Collision2D collision)
+    bool AttackWrongDirection(Collision2D collision)
     {
         if (collision.contacts[0].normal.y < 0)
         {
@@ -212,7 +212,7 @@ public class Player : MonoBehaviour {
 
         if (hitByEnemy)
         {
-            if (isAttack && !attackWrongDirection(collision))
+            if (isAttack && !AttackWrongDirection(collision))
             {
                 hitByEnemy.IsKilled();
             }
@@ -221,20 +221,17 @@ public class Player : MonoBehaviour {
                 if (collision.contacts[0].normal.y < 0)
                 {
                     // the contact force is downward
-                    // that's mean, the player hit this enemy from the top
+                    // that's mean, enemy is on top of the player
 
                     isHurt = new Vector2(0, -30);
                     animator.Play("hurt");
                     health = health - 1;
-
-                    Instantiate(_cloudParticlePrefab, transform.position, Quaternion.identity);
-                    Destroy(gameObject);
                 }
                 else
                 if (collision.contacts[0].normal.y > 0)
                 {
                     // the contact force is upward
-                    // that's mean, the player hit this enemy from the bottom
+                    // that's mean, enemy is in the bottom of the player
 
                     isHurt = new Vector2(0, 30);
                     animator.Play("hurt");
