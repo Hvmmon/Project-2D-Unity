@@ -26,7 +26,7 @@ public class Player : MonoBehaviour {
         renderer = GetComponent<SpriteRenderer>();
 
         isHurt = new Vector2(0, 0);
-        health = 5;
+        health = 1;
     }
     // -------------------------------------------------------------------------
     // Update is called once per frame
@@ -214,7 +214,7 @@ public class Player : MonoBehaviour {
         {
             if (isAttack && !AttackWrongDirection(collision))
             {
-                hitByEnemy.IsKilled();
+                hitByEnemy.IsHurt(currentMove);
             }
             else
             {
