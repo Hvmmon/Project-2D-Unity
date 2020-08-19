@@ -4,10 +4,10 @@ public class Enemy: MonoBehaviour
 {
     protected GameObject player;
 
-    protected Transform transform;
+    private new Transform transform;
     protected Animator animator;
     protected Rigidbody2D body2D;
-    protected BoxCollider2D collider2D;
+    protected new BoxCollider2D collider2D;
     protected float initial_x, initial_y;
     [HideInInspector] [SerializeField] new SpriteRenderer renderer;
 
@@ -18,10 +18,10 @@ public class Enemy: MonoBehaviour
     protected GameObject _cloudParticlePrefab;
 
     [SerializeField]
-    protected int lives;                        // number of reincarnation
+    protected int lives = 1;                        // number of reincarnation
 
     [SerializeField]
-    protected int blood;                        // enemy run out of blood -> lost 1 lives
+    protected int blood = 1;                        // enemy run out of blood -> lost 1 lives
     protected int initial_blood;
 
     protected string currentMove;

@@ -14,9 +14,14 @@ public class Player : MonoBehaviour {
     [SerializeField]
     protected float runSpeed = 10f;
 
+    [SerializeField]
+    protected int blood = 5;
+
+    [SerializeField]
+    protected HealthBar healthBar;
+
     private string currentMove;
     private Vector2 isHurt;
-    private int health;
     private bool isAttack;
     // -------------------------------------------------------------------------
     // Use this for initialization
@@ -26,7 +31,8 @@ public class Player : MonoBehaviour {
         renderer = GetComponent<SpriteRenderer>();
 
         isHurt = new Vector2(0, 0);
-        health = 1;
+
+        healthBar.SetMaxHealth(blood);
     }
     // -------------------------------------------------------------------------
     // Update is called once per frame
@@ -123,7 +129,7 @@ public class Player : MonoBehaviour {
     public void Update()
     {
 
-        if (health < 0)
+        if (blood < 0)
         {
             Instantiate(_cloudParticlePrefab, transform.position, Quaternion.identity);
             Destroy(gameObject);
@@ -225,7 +231,7 @@ public class Player : MonoBehaviour {
 
                     isHurt = new Vector2(0, -30);
                     animator.Play("hurt");
-                    health = health - 1;
+                    blood = blood - 1;
                 }
                 else
                 if (collision.contacts[0].normal.y > 0)
@@ -235,7 +241,7 @@ public class Player : MonoBehaviour {
 
                     isHurt = new Vector2(0, 30);
                     animator.Play("hurt");
-                    health = health - 1;
+                    blood = blood - 1;
 
                 }
                 else
@@ -246,7 +252,7 @@ public class Player : MonoBehaviour {
 
                     isHurt = new Vector2(30, 0);
                     animator.Play("hurt");
-                    health = health - 1;
+                    blood = blood - 1;
 
                 }
                 else
@@ -257,8 +263,10 @@ public class Player : MonoBehaviour {
 
                     isHurt = new Vector2(-30, 0);
                     animator.Play("hurt");
-                    health = health - 1;
+                    blood = blood - 1;
                 }
+
+                healthBar.SetHealth(blood);
             }
         }
     }
