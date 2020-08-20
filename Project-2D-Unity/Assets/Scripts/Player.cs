@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Player : MonoBehaviour {
 
-    private Animator animator;
-    private Rigidbody2D body2D;
+    protected Animator animator;
+    protected Rigidbody2D body2D;
     [HideInInspector] [SerializeField] new SpriteRenderer renderer;
 
     [SerializeField]
@@ -20,23 +18,23 @@ public class Player : MonoBehaviour {
     [SerializeField]
     protected HealthBar healthBar;
 
-    private string currentMove;
-    private Vector2 isHurt;
-    private bool isAttack;
+    protected string currentMove;
+    protected Vector2 isHurt;
+    protected bool isAttack;
     // -------------------------------------------------------------------------
     // Use this for initialization
-    void Start () {
+    public void Start () {
         animator = GetComponent<Animator>();
         body2D = GetComponent<Rigidbody2D>();
         renderer = GetComponent<SpriteRenderer>();
 
         isHurt = new Vector2(0, 0);
 
-        healthBar.SetMaxHealth(blood);
+        healthBar.SetMaxHealth(blood + 1);
     }
     // -------------------------------------------------------------------------
     // Update is called once per frame
-    void FixedUpdate () {
+    public void FixedUpdate () {
         if (isHurt.magnitude < 0.1)
         {
             bool go_left = Input.GetKey(KeyCode.LeftArrow);
@@ -162,7 +160,7 @@ public class Player : MonoBehaviour {
 
     }
     // -------------------------------------------------------------------------
-    bool AttackWrongDirection(Collision2D collision)
+    public bool AttackWrongDirection(Collision2D collision)
     {
         if (collision.contacts[0].normal.y < 0)
         {
@@ -266,7 +264,7 @@ public class Player : MonoBehaviour {
                     blood = blood - 1;
                 }
 
-                healthBar.SetHealth(blood);
+                healthBar.SetHealth(blood + 1);
             }
         }
     }

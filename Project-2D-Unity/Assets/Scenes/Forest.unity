@@ -520,6 +520,7 @@ GameObject:
   - component: {fileID: 764199572}
   - component: {fileID: 764199571}
   - component: {fileID: 764199573}
+  - component: {fileID: 764199574}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -652,7 +653,7 @@ MonoBehaviour:
   _cloudParticlePrefab: {fileID: 6773872051010749613, guid: f05b3ce478c2ad5d89ff2064f66310cb,
     type: 3}
   runSpeed: 10
-  blood: 10
+  blood: 9
   healthBar: {fileID: 1572135297}
 --- !u!50 &764199573
 Rigidbody2D:
@@ -675,6 +676,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &764199574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 764199567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c215415537649d6aea2763add0f8f11c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tag: Player
 --- !u!1 &823033386
 GameObject:
   m_ObjectHideFlags: 0
@@ -42345,72 +42359,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxPosition: {x: -0.4, y: 28}
   minPosition: {x: -118, y: -56}
---- !u!1 &1306712170
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1306712173}
-  - component: {fileID: 1306712172}
-  - component: {fileID: 1306712171}
-  m_Layer: 0
-  m_Name: EventSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1306712171
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1306712170}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
---- !u!114 &1306712172
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1306712170}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
-  m_DragThreshold: 10
---- !u!4 &1306712173
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1306712170}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1563100789
 GameObject:
   m_ObjectHideFlags: 0
@@ -42423,9 +42371,10 @@ GameObject:
   - component: {fileID: 1563100792}
   - component: {fileID: 1563100791}
   - component: {fileID: 1563100790}
+  - component: {fileID: 1563100794}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: Untagged
+  m_TagString: BloodBar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -42510,6 +42459,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1563100794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1563100789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c215415537649d6aea2763add0f8f11c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tag: BloodBar
 --- !u!1 &1565532563
 GameObject:
   m_ObjectHideFlags: 0
@@ -118516,9 +118478,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 5
-  m_WholeNumbers: 1
-  m_Value: 3
+  m_MaxValue: 0
+  m_WholeNumbers: 0
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
