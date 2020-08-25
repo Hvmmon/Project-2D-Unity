@@ -25,10 +25,13 @@ public class CameraFollow : MonoBehaviour
         // temp.x = playerTransform.position.x;
         // temp.y = playerTransform.position.y;
 
-        temp.x = Mathf.Clamp(playerTransform.position.x, minPosition.x, maxPosition.x);
-        temp.y = Mathf.Clamp(playerTransform.position.y, minPosition.y, maxPosition.y);
+        if (playerTransform)
+        {
+            temp.x = Mathf.Clamp(playerTransform.position.x, minPosition.x, maxPosition.x);
+            temp.y = Mathf.Clamp(playerTransform.position.y, minPosition.y, maxPosition.y);
 
-        // we set back the camera's temp position to the camera's position
-        transform.position = temp;
+            // we set back the camera's temp position to the camera's position
+            transform.position = temp;
+        }
     }
 }

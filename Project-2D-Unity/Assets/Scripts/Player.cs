@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Player : MonoBehaviour {
-
-    private Animator animator;
-    private Rigidbody2D body2D;
+    public int blood;
+    public GameObject OverMenu;
+    protected Animator animator;
+    protected Rigidbody2D body2D;
     [HideInInspector] [SerializeField] new SpriteRenderer renderer;
 
     [SerializeField]
@@ -14,23 +13,40 @@ public class Player : MonoBehaviour {
     [SerializeField]
     protected float runSpeed = 10f;
 
-    private string currentMove;
-    private Vector2 isHurt;
-    private int health;
-    private bool isAttack;
+
+    [SerializeField]
+    protected HealthBar healthBar;
+
+    [SerializeField]
+    protected ScoreScript scoreScript;
+
+
+    protected string currentMove;
+    protected Vector2 isHurt;
+    protected bool isAttack;
     // -------------------------------------------------------------------------
     // Use this for initialization
-    void Start () {
+    public void Start () {
         animator = GetComponent<Animator>();
         body2D = GetComponent<Rigidbody2D>();
         renderer = GetComponent<SpriteRenderer>();
 
         isHurt = new Vector2(0, 0);
-        health = 5;
-    }
+        switch (DifficultyValues.Difficulty)
+        {
+            case DifficultyValues.Difficulties.Normal:
+                blood = 4;
+                break;
+            case DifficultyValues.Difficulties.Hard:
+                blood = 2;
+                break;
+        }
+
+        healthBar.SetMaxHealth(blood + 1);
+}
     // -------------------------------------------------------------------------
     // Update is called once per frame
-    void FixedUpdate () {
+    public void FixedUpdate () {
         if (isHurt.magnitude < 0.1)
         {
             bool go_left = Input.GetKey(KeyCode.LeftArrow);
@@ -123,10 +139,12 @@ public class Player : MonoBehaviour {
     public void Update()
     {
 
-        if (health < 0)
+        if (blood < 0)
         {
             Instantiate(_cloudParticlePrefab, transform.position, Quaternion.identity);
             Destroy(gameObject);
+            OverMenu.SetActive(true);
+
 
         }
 
@@ -156,7 +174,7 @@ public class Player : MonoBehaviour {
 
     }
     // -------------------------------------------------------------------------
-    bool AttackWrongDirection(Collision2D collision)
+    public bool AttackWrongDirection(Collision2D collision)
     {
         if (collision.contacts[0].normal.y < 0)
         {
@@ -214,7 +232,7 @@ public class Player : MonoBehaviour {
         {
             if (isAttack && !AttackWrongDirection(collision))
             {
-                hitByEnemy.IsKilled();
+                hitByEnemy.IsHurt(currentMove);
             }
             else
             {
@@ -225,7 +243,7 @@ public class Player : MonoBehaviour {
 
                     isHurt = new Vector2(0, -30);
                     animator.Play("hurt");
-                    health = health - 1;
+                    blood = blood - 1;
                 }
                 else
                 if (collision.contacts[0].normal.y > 0)
@@ -235,7 +253,7 @@ public class Player : MonoBehaviour {
 
                     isHurt = new Vector2(0, 30);
                     animator.Play("hurt");
-                    health = health - 1;
+                    blood = blood - 1;
 
                 }
                 else
@@ -246,7 +264,7 @@ public class Player : MonoBehaviour {
 
                     isHurt = new Vector2(30, 0);
                     animator.Play("hurt");
-                    health = health - 1;
+                    blood = blood - 1;
 
                 }
                 else
@@ -257,8 +275,10 @@ public class Player : MonoBehaviour {
 
                     isHurt = new Vector2(-30, 0);
                     animator.Play("hurt");
-                    health = health - 1;
+                    blood = blood - 1;
                 }
+
+                healthBar.SetHealth(blood + 1);
             }
         }
     }
