@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 
 public class Player : MonoBehaviour {
-
+    public int blood;
+    public GameObject OverMenu;
     protected Animator animator;
     protected Rigidbody2D body2D;
     [HideInInspector] [SerializeField] new SpriteRenderer renderer;
@@ -12,11 +13,13 @@ public class Player : MonoBehaviour {
     [SerializeField]
     protected float runSpeed = 10f;
 
-    [SerializeField]
-    protected int blood = 5;
 
     [SerializeField]
     protected HealthBar healthBar;
+
+    [SerializeField]
+    protected ScoreScript scoreScript;
+
 
     protected string currentMove;
     protected Vector2 isHurt;
@@ -29,9 +32,18 @@ public class Player : MonoBehaviour {
         renderer = GetComponent<SpriteRenderer>();
 
         isHurt = new Vector2(0, 0);
+        switch (DifficultyValues.Difficulty)
+        {
+            case DifficultyValues.Difficulties.Normal:
+                blood = 4;
+                break;
+            case DifficultyValues.Difficulties.Hard:
+                blood = 2;
+                break;
+        }
 
         healthBar.SetMaxHealth(blood + 1);
-    }
+}
     // -------------------------------------------------------------------------
     // Update is called once per frame
     public void FixedUpdate () {
@@ -131,6 +143,8 @@ public class Player : MonoBehaviour {
         {
             Instantiate(_cloudParticlePrefab, transform.position, Quaternion.identity);
             Destroy(gameObject);
+            OverMenu.SetActive(true);
+
 
         }
 
