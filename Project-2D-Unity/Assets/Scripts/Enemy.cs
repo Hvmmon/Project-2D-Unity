@@ -28,6 +28,8 @@ public class Enemy: MonoBehaviour
     protected int hurt;                         // when collide by player who's attack
     protected int attack;
 
+    protected ScoreScript scoreScript;
+
     // -------------------------------------------------------------------------
     // Start is called before the first frame update
     public void Start()
@@ -45,6 +47,7 @@ public class Enemy: MonoBehaviour
         hurt = 0;
         attack = 0;
         initial_blood = blood;
+
     }
     // -------------------------------------------------------------------------
     // update is called once per frame
@@ -122,6 +125,7 @@ public class Enemy: MonoBehaviour
 
                     GameObject explosion = Instantiate(_cloudParticlePrefab, transform.position, Quaternion.identity);
                     Destroy(explosion, 3);
+                    ScoreScript.scoreValue += 10;
 
                     if (lives < 0)
                     {
@@ -205,8 +209,6 @@ public class Enemy: MonoBehaviour
     // -------------------------------------------------------------------------
     public void IsHurt(string currentPlayerMove)
     {
-        Debug.Log("enemy is hurt");
-        Debug.Log("current player move: " + currentMove);
         animator.Play("hurt");
         hurt = 1;
     }
